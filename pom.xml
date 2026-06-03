@@ -4,7 +4,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <!-- Replace placeholders with actual values1 -->
-    <groupId>ba4b415a-5a7e-498a-8f06-8fd508eced30	</groupId>
+    <groupId>ba4b415a-5a7e-498a-8f06-8fd508eced30</groupId>
     <artifactId>copado-mule-project</artifactId>
     <version>1.0.0-SNAPSHOT</version>
     <packaging>mule-application</packaging>
@@ -128,7 +128,7 @@
         <repository>
             <id>anypoint-exchange-v3</id>
             <name>Anypoint Exchange</name>
-            <url>https://maven.anypoint.mulesoft.com/api/v3/organizations/55c90e13-654c-42bd-92ec-b74d3167e8ac/maven</url>
+            <url>https://maven.anypoint.mulesoft.com/api/v3/organizations/ba4b415a-5a7e-498a-8f06-8fd508eced30/maven</url>
             <layout>default</layout>
         </repository>
     </distributionManagement>
