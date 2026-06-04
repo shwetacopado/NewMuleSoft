@@ -3,6 +3,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
+    <!-- Project-level groupId = your Anypoint org ID. This is correct. -->
     <groupId>ba4b415a-5a7e-498a-8f06-8fd508eced30</groupId>
     <artifactId>copado-mule-project</artifactId>
     <version>1.0.0-SNAPSHOT</version>
@@ -10,7 +11,6 @@
 
     <name>copado-mule-project</name>
 
-    <!-- Define properties -->
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
@@ -22,23 +22,31 @@
 
     <build>
         <plugins>
-            <!-- Maven clean plugin -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-clean-plugin</artifactId>
                 <version>3.2.0</version>
             </plugin>
 
-            <!-- Mule Maven plugin -->
+            <!--
+                FIX #1: groupId must be org.mule.tools.maven — NOT your org ID.
+                Your org ID (ba4b415a-...) is only valid at the project <groupId>
+                level and in distributionManagement URLs.
+            -->
             <plugin>
                 <groupId>org.mule.tools.maven</groupId>
                 <artifactId>mule-maven-plugin</artifactId>
                 <version>${mule.maven.plugin.version}</version>
                 <extensions>true</extensions>
                 <configuration>
-                    <!-- CloudHub 2.0 deployment settings -->
                     <cloudhub2Deployment>
                         <uri>https://anypoint.mulesoft.com</uri>
+
+                        <!--
+                            These properties are passed by the deploy script via -D flags
+                            when environment_type=cloudhub2.0 is set on the Environment record.
+                            All must be non-null at runtime.
+                        -->
                         <provider>${provider}</provider>
                         <environment>${environment}</environment>
                         <target>${target}</target>
@@ -49,14 +57,13 @@
                         <applicationName>${appname}</applicationName>
                         <replicas>${replicas}</replicas>
                         <vCores>${vcores}</vCores>
-                        <businessGroupId>ba4b415a-5a7e-498a-8f06-8fd508eced30</businessGroupId>
+
                         <!--
-                            Add real application properties below if needed, e.g.:
-                            <properties>
-                                <env>production</env>
-                            </properties>
+                            businessGroupId: use your actual Anypoint org/business group ID.
+                            This is correct as-is if deploying to the root org.
                         -->
-                        <!-- Deployment settings -->
+                        <businessGroupId>ba4b415a-5a7e-498a-8f06-8fd508eced30</businessGroupId>
+
                         <deploymentSettings>
                             <enforceDeployingReplicasAcrossNodes>false</enforceDeployingReplicasAcrossNodes>
                             <updateStrategy>recreate</updateStrategy>
@@ -69,7 +76,7 @@
                 </configuration>
             </plugin>
 
-            <!-- FIX: Exchange Mule Maven plugin - required for Exchange pre-deploy -->
+            <!-- Exchange pre-deploy plugin — groupId is correct here -->
             <plugin>
                 <groupId>org.mule.tools.maven</groupId>
                 <artifactId>exchange-mule-maven-plugin</artifactId>
@@ -87,7 +94,6 @@
         </plugins>
     </build>
 
-    <!-- Define dependencies -->
     <dependencies>
         <dependency>
             <groupId>org.mule.connectors</groupId>
@@ -103,7 +109,6 @@
         </dependency>
     </dependencies>
 
-    <!-- Define repositories -->
     <repositories>
         <repository>
             <id>anypoint-exchange-v3</id>
@@ -131,7 +136,6 @@
         </repository>
     </repositories>
 
-    <!-- FIX: Plugin repositories - added anypoint-exchange-v3 and MuleRepository -->
     <pluginRepositories>
         <pluginRepository>
             <id>mulesoft-releases</id>
@@ -142,7 +146,6 @@
                 <enabled>false</enabled>
             </snapshots>
         </pluginRepository>
-        <!-- FIX: Required to resolve exchange-mule-maven-plugin -->
         <pluginRepository>
             <id>anypoint-exchange-v3</id>
             <name>Anypoint Exchange</name>
@@ -152,7 +155,6 @@
                 <enabled>false</enabled>
             </snapshots>
         </pluginRepository>
-        <!-- FIX: Required to resolve mule-maven-plugin EE artifacts -->
         <pluginRepository>
             <id>MuleRepository</id>
             <name>MuleSoft EE Repository</name>
@@ -167,7 +169,10 @@
         </pluginRepository>
     </pluginRepositories>
 
-    <!-- Distribution management -->
+    <!--
+        distributionManagement: org ID in the URL is correct.
+        The <id> must match the server entry in settings.xml (anypoint-exchange-v3).
+    -->
     <distributionManagement>
         <repository>
             <id>anypoint-exchange-v3</id>
